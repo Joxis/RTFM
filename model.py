@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.init as torch_init
-torch.set_default_tensor_type('torch.cuda.FloatTensor')
+# torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
 def weight_init(m):
     classname = m.__class__.__name__
@@ -229,7 +229,7 @@ class Model(nn.Module):
             abnormal_scores = normal_scores
             abnormal_features = normal_features
 
-        select_idx = torch.ones_like(nfea_magnitudes).cuda()
+        select_idx = torch.ones_like(nfea_magnitudes)  # .cuda()
         select_idx = self.drop_out(select_idx)
 
         #######  process abnormal videos -> select top3 feature magnitude  #######
@@ -251,7 +251,7 @@ class Model(nn.Module):
 
 
         ####### process normal videos -> select top3 and bottom3 instances  #######
-        select_idx_normal = torch.ones_like(nfea_magnitudes).cuda()
+        select_idx_normal = torch.ones_like(nfea_magnitudes)  # .cuda()
         select_idx_normal = self.drop_out(select_idx_normal)
         nfea_magnitudes_drop = nfea_magnitudes * select_idx_normal
         idx_normal = torch.topk(nfea_magnitudes_drop, k_nor, dim=1)[1]
